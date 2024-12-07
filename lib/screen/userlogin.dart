@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:http/http.dart' as http;
+import 'package:sala_bu/screen/app_changpasword.dart';
 import 'package:sala_bu/screen/app_dashboard.dart';
 import 'package:sala_bu/screen/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sala_bu/app_url.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
   bool _isPasswordVisible = false;
+
 
   Future<void> loginUser(String userName, String password) async {
     try {
@@ -39,11 +42,19 @@ class _LoginScreenState extends State<LoginScreen> {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         if (data["success"] == 1) {
-          // Navigate to the dashboard upon successful login
+          final SharedPreferences prefs = await SharedPreferences.getInstance();
+          prefs.setBool('IS_LOGGEDIN', true); // Mark the user as logged in
+          prefs.setString('userID', data['userID'] ?? '');
+          prefs.setString('userName', data['userName'] ?? '');
+          prefs.setString('userImage', data['userImage'] ?? '');
+          prefs.setString('userEmail', data['userEmail'] ?? '');
+          prefs.setString('fullname', data['fullname'] ?? '');
+          prefs.setString('phone', data['phone'] ?? '');
+
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const AppDashboard()),
-                (route) => false,
+                (route) => false, // Remove all previous routes
           );
           EasyLoading.showSuccess("Login successful!");
         } else {
@@ -56,8 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
       EasyLoading.showError("An error occurred: $e");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      MaterialPageRoute(builder: (context) => AppChangpasword()),
                     );
                   },
                 ),

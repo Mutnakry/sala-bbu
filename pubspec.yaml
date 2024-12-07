@@ -32,6 +32,10 @@ dependencies:
     sdk: flutter
   http: ^0.13.5 # Add this line for the HTTP package
   flutter_easyloading: ^3.0.5 # Replace with the latest version from pub.dev
+#  shared_preferences: ^2.1.0
+  shared_preferences: ^2.2.3
+  image_picker: ^1.0.4
+  crypto: ^3.0.2
 
 
 
