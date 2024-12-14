@@ -23,7 +23,52 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isPasswordVisible = false;
 
 
-  Future<void> loginUser(String userName, String password) async {
+  // Future<void> loginUser(String userName, String password) async {
+  //   try {
+  //     var uri = Uri.parse("${AppUrl.url}login_user.php");
+  //     EasyLoading.show(status: 'Logging in...');
+  //
+  //     final response = await http.post(
+  //       uri,
+  //       body: {
+  //         'UserLoginName': userName,
+  //         'PasswordLogin': password,
+  //       },
+  //     );
+  //     print("Server response: ${response.body}");
+  //
+  //     EasyLoading.dismiss();
+  //
+  //     if (response.statusCode == 200) {
+  //       final data = jsonDecode(response.body);
+  //       if (data["success"] == 1) {
+  //         final SharedPreferences prefs = await SharedPreferences.getInstance();
+  //         prefs.setBool('IS_LOGGEDIN', true); // Mark the user as logged in
+  //         prefs.setString('userID', data['userID'] ?? '');
+  //         prefs.setString('userName', data['userName'] ?? '');
+  //         prefs.setString('userImage', data['userImage'] ?? '');
+  //         prefs.setString('userEmail', data['userEmail'] ?? '');
+  //         prefs.setString('fullname', data['fullname'] ?? '');
+  //         prefs.setString('phone', data['phone'] ?? '');
+  //
+  //         Navigator.pushAndRemoveUntil(
+  //           context,
+  //           MaterialPageRoute(builder: (context) => const AppDashboard()),
+  //               (route) => false, // Remove all previous routes
+  //         );
+  //         EasyLoading.showSuccess("Login successful!");
+  //       } else {
+  //         EasyLoading.showError(data["msg_error"] ?? "Invalid credentials.");
+  //       }
+  //     } else {
+  //       EasyLoading.showError("Server error: ${response.statusCode}");
+  //     }
+  //   } catch (e) {
+  //     EasyLoading.showError("An error occurred: $e");
+  //   }
+  // }
+
+  Future<void> loginUser(String username, String password) async {
     try {
       var uri = Uri.parse("${AppUrl.url}login_user.php");
       EasyLoading.show(status: 'Logging in...');
@@ -31,11 +76,10 @@ class _LoginScreenState extends State<LoginScreen> {
       final response = await http.post(
         uri,
         body: {
-          'UserLoginName': userName,
+          'UserLoginName': username,
           'PasswordLogin': password,
         },
       );
-      print("Server response: ${response.body}");
 
       EasyLoading.dismiss();
 
@@ -67,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
       EasyLoading.showError("An error occurred: $e");
     }
   }
+
 
   @override
   Widget build(BuildContext context) {
